@@ -21,11 +21,15 @@ impl DatabaseRepository {
         Self { collection: col }
     }
 
-    pub fn get_tasks(&self) -> Result<Vec<Tasks>, Error> {
-        let tasks = self.collection.find(None, None).ok().unwrap();
-
-        Ok(tasks.map(|i| i.unwrap()).collect())
-    }
+    pub fn get_tasks(&self) -> Result<Vec<Tasks>, mongodb::error::Error> {
+        let tasks_cursor = self.collection.find(None, None)?;
+    
+        let tasks: Result<Vec<Tasks>, mongodb::error::Error> = tasks_cursor
+            .map(|result| result.map_err(Into::into))
+            .collect();
+    
+        tasks
+    }    
 
     pub fn insert_task(&self, task: &Tasks) -> Result<InsertOneResult, Error> {
         let inserted_task = self.collection.insert_one(task, None).ok().unwrap();
