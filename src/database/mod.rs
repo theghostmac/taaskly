@@ -29,7 +29,7 @@ impl DatabaseRepository {
 
     pub fn insert_task(&self, task: &Tasks) -> Result<InsertOneResult, Error> {
         let inserted_task = self.collection.insert_one(task, None).ok().unwrap();
-        
+
         Ok(inserted_task)
     }
 
