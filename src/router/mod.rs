@@ -25,30 +25,23 @@ pub fn add_task(db: &State<DatabaseRepository>, new_task: Json<Tasks>) -> Result
     };
 
     match db.insert_task(&to_insert) {
-        Ok(res) => {
-            Ok(json!(res))
-        }
-        Err(_) => Err(Status::InternalServerError)
+        Ok(res) => Ok(json!(res)),
+        Err(_) => Err(Status::InternalServerError),
     }
 }
-
 
 #[delete("/<id>")]
 pub fn delete_task(db: &State<DatabaseRepository>, id: String) -> Result<Value, Status> {
     match db.remove_task(&id) {
-        Ok(res) => {
-            Ok(json!(res))
-        }
-        Err(_) => Err(Status::InternalServerError)
+        Ok(res) => Ok(json!(res)),
+        Err(_) => Err(Status::InternalServerError),
     }
 }
 
 #[get("/<id>/done")]
 pub fn mark_as_done(db: &State<DatabaseRepository>, id: String) -> Result<Value, Status> {
     match db.mark_as_done(&id) {
-        Ok(res) => {
-            Ok(json!(res))
-        }
-        Err(_) => Err(Status::InternalServerError)
+        Ok(res) => Ok(json!(res)),
+        Err(_) => Err(Status::InternalServerError),
     }
 }
